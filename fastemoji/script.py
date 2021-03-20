@@ -54,6 +54,12 @@ def user_select_emoji(emojis: list[str]) -> str:
             continue
 
 
+def copy_emojis_to_clipboard(matches: list[str]) -> None:
+    all_matching_emojis = ' '.join(matches)
+    print(f"Copying {all_matching_emojis} to clipboard")
+    copy(all_matching_emojis)
+
+
 def main():
     while True:
         user_input = input(PROMPT)
@@ -64,10 +70,7 @@ def main():
 
         words = user_input.split()
         matches = get_matching_emojis(words)
-
-        all_matching_emojis = ' '.join(matches)
-        print(f"Copying {all_matching_emojis} to clipboard")
-        copy(all_matching_emojis)
+        copy_emojis_to_clipboard(matches)
 
 
 if __name__ == "__main__":
