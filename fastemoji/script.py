@@ -21,7 +21,7 @@ def get_matching_emojis(words: list[str],
     """
     matches = []
     for word in words:
-        emojis = get_emojis_for_word(word.rstrip('.'))
+        emojis = get_emojis_for_word(word.rstrip(SIGNAL_CHAR))
         if len(emojis) == 0:
             continue
 
