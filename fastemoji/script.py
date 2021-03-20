@@ -1,7 +1,8 @@
+import re
+
 from emoji import EMOJI_UNICODE
 from pyperclip import copy
 
-LANGUAGE = 'en'
 QUIT = 'q'
 SIGNAL_CHAR = '.'
 PROMPT = f"""
@@ -10,10 +11,19 @@ Type one or more emoji related words ...
 End a word with a {SIGNAL_CHAR} if you want to select an emoji if there are multiple
 matches, otherwise the first match will be picked. Type 'q' to exit.
 > """
+NON_EMOJI_CHARS = re.compile('[^\U00010000-\U0010ffff]',
+                             flags=re.UNICODE)
+LANGUAGE = 'en'  # emoji lib also supports es, pt and it
+EMOJI_MAPPING = EMOJI_UNICODE[LANGUAGE]
 
 
-def get_matching_emojis(words: list[str],
-                        interactive: bool = False) -> list[str]:
+def clean_non_emoji_characters(emoji: str) -> str:
+    return NON_EMOJI_CHARS.sub(r'', emoji)
+
+
+def get_matching_emojis(
+    words: list[str], interactive: bool = False
+) -> list[str]:
     """Traverse words list finding matching emojis.
        If there are multiple matches take the first one unless
        interactive is set to True or the word ends with a SIGNAL_CHAR,
@@ -31,14 +41,17 @@ def get_matching_emojis(words: list[str],
         else:
             selected_emoji = emojis[0]
 
-        matches.append(selected_emoji)
+        matches.append(
+            clean_non_emoji_characters(selected_emoji))
 
     return matches
 
 
-def get_emojis_for_word(word: str, lang: str = LANGUAGE) -> list[str]:
-    return [emo for name, emo in EMOJI_UNICODE[lang].items()
-            if word in name]
+def get_emojis_for_word(
+    word: str, emoji_mapping: dict[str, str] = EMOJI_MAPPING
+) -> list[str]:
+    # TODO: mypy says "Incompatible types in assignment"
+    return [emo for name, emo in emoji_mapping.items() if word in name]
 
 
 def user_select_emoji(emojis: list[str]) -> str:
@@ -70,7 +83,10 @@ def main():
 
         words = user_input.split()
         matches = get_matching_emojis(words)
-        copy_emojis_to_clipboard(matches)
+        if matches:
+            copy_emojis_to_clipboard(matches)
+        else:
+            print(f"No matches for {user_input}")
 
 
 if __name__ == "__main__":
