@@ -1,22 +1,21 @@
-from random import choice
-
 from emoji import EMOJI_UNICODE
 from pyperclip import copy
 
 LANGUAGE = 'en'
 QUIT = 'q'
-RANDOM_MODE = True
 
 
 def get_matching_emojis(words: list[str],
-                        at_random: bool = RANDOM_MODE) -> list[str]:
+                        take_first_hit: bool = True) -> list[str]:
     matches = []
     for word in words:
         emojis = get_emojis_for_word(word)
         if len(emojis) == 0:
             continue
-        select_func = choice if at_random else select_emoji_interactively
-        selected_emoji = emojis[0] if len(emojis) == 1 else select_func(emojis)
+        if len(emojis) == 1 or take_first_hit:
+            selected_emoji = emojis[0]
+        else:
+            selected_emoji = user_select_emoji(emojis)
         matches.append(selected_emoji)
     return matches
 
@@ -26,7 +25,7 @@ def get_emojis_for_word(word: str, lang: str = LANGUAGE) -> list[str]:
             if word in name]
 
 
-def select_emoji_interactively(emojis: list[str]) -> str:
+def user_select_emoji(emojis: list[str]) -> str:
     while True:
         try:
             for i, emo in enumerate(emojis, start=1):
