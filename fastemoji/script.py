@@ -1,16 +1,32 @@
-import emoji
-import pyperclip
+from random import choice
+
+from emoji import EMOJI_UNICODE
+from pyperclip import copy
 
 LANGUAGE = 'en'
 QUIT = 'q'
+RANDOM_MODE = True
 
 
-def get_emojis(word: str, lang: str = LANGUAGE) -> list[str]:
-    return [emo for name, emo in emoji.EMOJI_UNICODE[lang].items()
+def get_matching_emojis(words: list[str],
+                        at_random: bool = RANDOM_MODE) -> list[str]:
+    matches = []
+    for word in words:
+        emojis = get_emojis_for_word(word)
+        if len(emojis) == 0:
+            continue
+        select_func = choice if at_random else select_emoji_interactively
+        selected_emoji = emojis[0] if len(emojis) == 1 else select_func(emojis)
+        matches.append(selected_emoji)
+    return matches
+
+
+def get_emojis_for_word(word: str, lang: str = LANGUAGE) -> list[str]:
+    return [emo for name, emo in EMOJI_UNICODE[lang].items()
             if word in name]
 
 
-def select_emoji(emojis: list[str]) -> str:
+def select_emoji_interactively(emojis: list[str]) -> str:
     while True:
         try:
             for i, emo in enumerate(emojis, start=1):
@@ -31,19 +47,12 @@ def main():
             print('Bye')
             break
 
-        matches = []
         words = user_input.split()
-        for word in words:
-            emojis = get_emojis(word)
-            if len(emojis) == 0:
-                continue
-
-            selected_emoji = emojis[0] if len(emojis) == 1 else select_emoji(emojis)
-            matches.append(selected_emoji)
+        matches = get_matching_emojis(words)
 
         all_matching_emojis = ' '.join(matches)
         print(f"Copying {all_matching_emojis} to clipboard")
-        pyperclip.copy(all_matching_emojis)
+        copy(all_matching_emojis)
 
 
 if __name__ == "__main__":
