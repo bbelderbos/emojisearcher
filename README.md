@@ -17,6 +17,13 @@ poetry run emo
 
 (New to `poetry`? [Start here](https://python-poetry.org/docs/).)
 
+You can also make a shell alias:
+
+```
+# .bashrc
+alias emo="cd $HOME/code/fastemoji && poetry run emo"
+```
+
 ### Other ways
 
 While sharing this on social media I learned about some useful OS shortcuts to retrieve emojis, [thanks Matt!](https://twitter.com/bbelderbos/status/1374414940988043264)
