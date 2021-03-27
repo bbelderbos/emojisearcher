@@ -1,8 +1,8 @@
 import pytest
 
-from fastemoji.script import (clean_non_emoji_characters,
-                              get_matching_emojis,
-                              get_emojis_for_word)
+from emojisearcher.script import (clean_non_emoji_characters,
+                                  get_matching_emojis,
+                                  get_emojis_for_word)
 
 
 @pytest.mark.parametrize("word, expected", [
