@@ -24,6 +24,12 @@ You can also make a shell alias:
 alias emo="cd $HOME/code/emojisearcher && poetry run emo"
 ```
 
+And to run the tests:
+
+```
+poetry run pytest
+```
+
 ### Other ways
 
 While sharing this on social media I learned about some useful OS shortcuts to retrieve emojis, [thanks Matt!](https://twitter.com/bbelderbos/status/1374414940988043264)
