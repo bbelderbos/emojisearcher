@@ -63,7 +63,10 @@ def user_select_emoji(emojis: list[str]) -> str:
             idx = int(user_input)
             return emojis[idx - 1]
         except ValueError:
-            print(f"{user_input} is not an integer: ")
+            print(f"{user_input} is not an integer.")
+            continue
+        except IndexError:
+            print(f"{user_input} is not a valid option.")
             continue
 
 

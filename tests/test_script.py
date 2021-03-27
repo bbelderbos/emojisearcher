@@ -1,8 +1,12 @@
+from inspect import cleandoc
+from unittest.mock import patch
+
 import pytest
 
 from emojisearcher.script import (clean_non_emoji_characters,
                                   get_matching_emojis,
-                                  get_emojis_for_word)
+                                  get_emojis_for_word,
+                                  user_select_emoji)
 
 
 @pytest.mark.parametrize("word, expected", [
@@ -33,3 +37,31 @@ def test_get_emojis_for_word(word, num_results, emoji):
     result = get_emojis_for_word(word)
     assert len(result) == num_results
     assert result[0] == emoji
+
+
+@patch("builtins.input", side_effect=['a', 10, 2, 'q'])
+def test_user_selects_tree_emoji(mock_input, capfd):
+    trees = ['🎄', '🌳', '🌲', '🌴', '🎋']
+    ret = user_select_emoji(trees)
+    assert ret == "🌳"
+    actual = capfd.readouterr()[0].strip()
+    expected = cleandoc("""
+    1 🎄
+    2 🌳
+    3 🌲
+    4 🌴
+    5 🎋
+    a is not an integer.
+    1 🎄
+    2 🌳
+    3 🌲
+    4 🌴
+    5 🎋
+    10 is not a valid option.
+    1 🎄
+    2 🌳
+    3 🌲
+    4 🌴
+    5 🎋
+    """)
+    assert actual == expected
