@@ -1,4 +1,4 @@
-## FastEmoji
+## Emoji Searcher
 
 Automate the boring stuff: I have been googling emojis and manually copying them to my clipboard.
 
@@ -9,8 +9,8 @@ By default it takes the first match in case there are multiple matching emojis. 
 ### How to run it
 
 ```
-git clone git@github.com:bbelderbos/fastemoji.git
-cd fastemoji
+git clone git@github.com:bbelderbos/emojisearcher.git
+cd emojisearcher
 poetry install
 poetry run emo
 ```
@@ -21,7 +21,7 @@ You can also make a shell alias:
 
 ```
 # .bashrc
-alias emo="cd $HOME/code/fastemoji && poetry run emo"
+alias emo="cd $HOME/code/emojisearcher && poetry run emo"
 ```
 
 ### Other ways
