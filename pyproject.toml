@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "emojisearcher"
 version = "0.1.0"
-description = ""
+description = "Look up emojis by text and copy them to the clipboard."
 authors = ["Bob Belderbos <bobbelderbos@gmail.com>"]
 
 [tool.poetry.dependencies]
