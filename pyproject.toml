@@ -1,8 +1,13 @@
 [tool.poetry]
 name = "emojisearcher"
-version = "0.1.0"
+version = "0.3.0"
 description = "Look up emojis by text and copy them to the clipboard."
 authors = ["Bob Belderbos <bobbelderbos@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/bbelderbos/emojisearcher"
+repository = "https://github.com/bbelderbos/emojisearcher"
+keywords = ["emoji", "search"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
