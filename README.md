@@ -6,14 +6,14 @@ So it was time to write a script to look up emojis by text from the command line
 
 By default it takes the first match in case there are multiple matching emojis. However if you append a dot (.) to a word you get to choose which emoji gets copied.
 
-### How to run it
+### How to install and run it
 
 ```
 $ git clone git@github.com:bbelderbos/emojisearcher.git
 $ cd emojisearcher
 $ python3.10 -m venv venv
-$ pip install -r requirements.txt
 $ source venv/bin/activate
+(venv) $ pip install -r requirements.txt
 
 # search from cli
 (venv) $ python -m emojisearcher.script bicep
@@ -74,12 +74,13 @@ Bye
 (venv) $ pytest
 ```
 
-Using a shell alias can be really convenient for this:
+Using a shell alias can be really convenient for this (assuming you have the project cloned in `~/code`):
 
 ```
 # .zshrc
 function emo {
-    cd $HOME/code/emojisearcher && ae && python -m emojisearcher.script "$1"
+    # subshell so you don't stay in the virtual env after running it
+    (cd $HOME/code/emojisearcher && source venv/bin/activate && python -m emojisearcher.script "$1")
 }
 ```
 
