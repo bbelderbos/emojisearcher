@@ -80,8 +80,16 @@ Using a shell alias can be really convenient for this (assuming you have the pro
 # .zshrc
 function emo {
     # subshell so you don't stay in the virtual env after running it
-    (cd $HOME/code/emojisearcher && source venv/bin/activate && python -m emojisearcher.script "$1")
+    (cd $HOME/code/emojisearcher && source venv/bin/activate && python -m emojisearcher.script "$@")
 }
+
+$ source ~/.zshrc
+$ emo snake
+Copied 🐍 to clipboard
+
+# or get multiple emojis at once
+$ emo snake bicep tada heart fire
+Copied 🐍 💪 🎉 💓 🔥 to clipboard
 ```
 
 After sourcing your .zshrc you can now get emojis copied to your clipboard fast using `emo bicep`, `emo tada` etc.
