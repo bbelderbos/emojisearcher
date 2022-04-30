@@ -19,9 +19,9 @@ def test_clean_non_emoji_characters(word, expected):
 
 
 @pytest.mark.parametrize("words, matches", [
-    ("heart snake beer", ['🫀', '🐍', '🍺']),
+    ("heart snake beer", ['💓', '🐍', '🍺']),
     ("hand scream angry", ['👌', '😱', '😠']),
-    ("struck dog", ['🤩', '🐕']),
+    ("struck dog", ['🤩', '🐶']),
     ("slee tree fire water cat", ['😴', '🎄', '🔥', '🤽', '🈸']),
 ])
 def test_get_matching_emojis(words, matches):
@@ -29,9 +29,9 @@ def test_get_matching_emojis(words, matches):
 
 
 @pytest.mark.parametrize("word, num_results, emoji", [
-    ("heart", 130, '🫀'),
+    ("heart", 36, '💓'),
     ("snake", 1, '🐍'),
-    ("grin", 7, '😺'),
+    ("grin", 9, '😺'),
 ])
 def test_get_emojis_for_word(word, num_results, emoji):
     result = get_emojis_for_word(word)
