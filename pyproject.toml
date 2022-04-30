@@ -1,26 +1,26 @@
-[tool.poetry]
-name = "emojisearcher"
-version = "0.4.0"
-description = "Look up emojis by text and copy them to the clipboard."
-authors = ["Bob Belderbos <bobbelderbos@gmail.com>"]
-license = "MIT"
-readme = "README.md"
-homepage = "https://github.com/bbelderbos/emojisearcher"
-repository = "https://github.com/bbelderbos/emojisearcher"
-keywords = ["emoji", "search"]
-
-[tool.poetry.dependencies]
-python = "^3.9"
-pyperclip = "^1.8.2"
-emoji = "^1.2.0"
-
-[tool.poetry.dev-dependencies]
-pytest = "^4.6"
-mypy = "^0.812"
-
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
-[tool.poetry.scripts]
-emo = "emojisearcher.script:main"
+[project]
+name = "emojisearcher"
+authors = [{name = "Bob Belderbos", email = "bob@pybit.es"}]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+dependencies = [
+    "pyperclip >=1.8.2",
+    "rich >=12.3.0",
+]
+
+[tool.flit.module]
+name = "emojisearcher"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+
+[project.urls]
+Source = "https://github.com/bbelderbos/emojisearcher"

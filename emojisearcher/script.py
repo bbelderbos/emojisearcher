@@ -1,6 +1,7 @@
 import re
+import sys
 
-from emoji import EMOJI_UNICODE
+from rich._emoji_codes import EMOJI as EMOJI_MAPPING
 from pyperclip import copy
 
 QUIT = 'q'
@@ -13,8 +14,6 @@ matches, otherwise the first match will be picked. Type 'q' to exit.
 > """
 NON_EMOJI_CHARS = re.compile('[^\U00010000-\U0010ffff]',
                              flags=re.UNICODE)
-LANGUAGE = 'en'  # emoji lib also supports es, pt and it
-EMOJI_MAPPING = EMOJI_UNICODE[LANGUAGE]
 
 
 def clean_non_emoji_characters(emoji: str) -> str:
@@ -72,25 +71,33 @@ def user_select_emoji(emojis: list[str]) -> str:
 
 def copy_emojis_to_clipboard(matches: list[str]) -> None:
     all_matching_emojis = ' '.join(matches)
-    print(f"Copying {all_matching_emojis} to clipboard")
+    print(f"Copied {all_matching_emojis} to clipboard")
     copy(all_matching_emojis)
 
 
-def main():
-    while True:
-        user_input = input(PROMPT)
-        user_input = user_input.lower()
-        if user_input == QUIT:
-            print('Bye')
-            break
+def _match_emojis(text):
+    words = text.split()
+    matches = get_matching_emojis(words)
+    if matches:
+        copy_emojis_to_clipboard(matches)
+    else:
+        print(f"No matches for {text}")
 
-        words = user_input.split()
-        matches = get_matching_emojis(words)
-        if matches:
-            copy_emojis_to_clipboard(matches)
-        else:
-            print(f"No matches for {user_input}")
+
+def main(args):
+    if not args:
+        while True:
+            user_input = input(PROMPT)
+            user_input = user_input.lower()
+            if user_input == QUIT:
+                print('Bye')
+                break
+
+            _match_emojis(user_input)
+    else:
+        text = " ".join(args)
+        _match_emojis(text)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
