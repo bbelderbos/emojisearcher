@@ -9,3 +9,7 @@ lint:
 .PHONY: typing
 typing:
 	mypy emojisearcher tests
+
+.PHONY: cov
+cov:
+	pytest --cov=emojisearcher --cov-report=term-missing
