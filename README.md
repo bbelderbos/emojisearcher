@@ -15,6 +15,9 @@ $ python3.10 -m venv venv
 $ source venv/bin/activate
 (venv) $ pip install -r requirements.txt
 
+# or in one command
+$ make setup
+
 # search from cli
 (venv) $ python -m emojisearcher.script bicep
 Copied 💪 to clipboard
@@ -164,11 +167,16 @@ Copied 😎 to clipboard
 
 💡 I was considering making this file updatable via the app, but it adds extra complexity and command line arguments. I like to keep it simple for now and it's easy enough to update the preferences file in your editor.
 
-### Running the tests
+### Running the tests and other tools
 
 ```
-(venv) $ pip install -r requirements-dev.txt
 (venv) $ pytest
+# or
+(venv) $ make cov
+
+# run flake8 and mypy
+(venv) $ make lint
+(venv) $ make typing
 ```
 
 
