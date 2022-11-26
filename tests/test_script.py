@@ -72,6 +72,17 @@ def test_user_preferences(add_preferences, words, matches):
     assert get_matching_emojis(words.split(), preferences=preferences) == matches
 
 
+@patch("emojisearcher.script.user_select_emoji", side_effect=['💓'])
+def test_get_emojis_for_word_with_user_input(mock_user_inp):
+    matches = get_matching_emojis(["heart"], preferences={}, interactive=True)
+    assert matches[0] == '💓'
+
+
+@patch("emojisearcher.script.user_select_emoji", side_effect=[None])
+def test_get_emojis_for_word_with_user_cancelling(mock_user_inp):
+    assert get_matching_emojis(["heart"], preferences={}, interactive=True) == []
+
+
 def test_user_prefs_with_larger_emoji(add_preferences):
     preferences = load_preferences()
     matches = get_matching_emojis(["bliksem"], preferences=preferences)
