@@ -1,0 +1,7 @@
+pyperclip
+rich
+# dev
+pytest
+pytest-cov
+mypy
+flake8
