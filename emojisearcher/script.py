@@ -1,5 +1,6 @@
 import re
 import sys
+from typing import Union
 
 from rich._emoji_codes import EMOJI as EMOJI_MAPPING
 from pyperclip import copy
@@ -37,6 +38,8 @@ def get_matching_emojis(
         interactive_mode = word.endswith(SIGNAL_CHAR) or interactive
         if len(emojis) > 1 and interactive_mode:
             selected_emoji = user_select_emoji(emojis)
+            if selected_emoji is None:
+                continue
         else:
             selected_emoji = emojis[0]
 
@@ -49,11 +52,10 @@ def get_matching_emojis(
 def get_emojis_for_word(
     word: str, emoji_mapping: dict[str, str] = EMOJI_MAPPING
 ) -> list[str]:
-    # TODO: mypy says "Incompatible types in assignment"
     return [emo for name, emo in emoji_mapping.items() if word in name]
 
 
-def user_select_emoji(emojis: list[str]) -> str:
+def user_select_emoji(emojis: list[str]) -> Union[str, None]:
     while True:
         try:
             for i, emo in enumerate(emojis, start=1):
@@ -67,6 +69,9 @@ def user_select_emoji(emojis: list[str]) -> str:
         except IndexError:
             print(f"{user_input} is not a valid option.")
             continue
+        except KeyboardInterrupt:
+            print(" Exiting selection menu.\n")
+            return None
 
 
 def copy_emojis_to_clipboard(matches: list[str]) -> None:
