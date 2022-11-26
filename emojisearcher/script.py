@@ -1,9 +1,10 @@
 import re
 import sys
-from typing import Union
 
 from rich._emoji_codes import EMOJI as EMOJI_MAPPING
 from pyperclip import copy
+
+from .preferences import load_preferences
 
 QUIT = 'q'
 SIGNAL_CHAR = '.'
@@ -22,13 +23,26 @@ def clean_non_emoji_characters(emoji: str) -> str:
 
 
 def get_matching_emojis(
-    words: list[str], interactive: bool = False
+    words: list[str],
+    *,
+    preferences: dict[str, str] | None = None,
+    interactive: bool = False
 ) -> list[str]:
-    """Traverse words list finding matching emojis.
-       If there are multiple matches take the first one unless
-       interactive is set to True or the word ends with a SIGNAL_CHAR,
-       which means user specified desire for interactive lookup.
     """
+    Traverse words list finding matching emojis.
+
+    If a preference emoji is set that takes precedence.
+
+    If there are multiple matches take the first one unless
+    interactive is set to True or the word ends with a SIGNAL_CHAR,
+    which means user specified desire for interactive lookup.
+
+    Making preferences "injectable" makes it testable and the
+    existence of a .preferences does not mess with the tests.
+    """
+    if preferences is None:
+        preferences = load_preferences()
+
     matches = []
     for word in words:
         emojis = get_emojis_for_word(word.rstrip(SIGNAL_CHAR))
@@ -36,7 +50,11 @@ def get_matching_emojis(
             continue
 
         interactive_mode = word.endswith(SIGNAL_CHAR) or interactive
-        if len(emojis) > 1 and interactive_mode:
+        selected_emoji: str | None
+
+        if word in preferences:
+            selected_emoji = preferences[word]
+        elif len(emojis) > 1 and interactive_mode:
             selected_emoji = user_select_emoji(emojis)
             if selected_emoji is None:
                 continue
@@ -55,7 +73,7 @@ def get_emojis_for_word(
     return [emo for name, emo in emoji_mapping.items() if word in name]
 
 
-def user_select_emoji(emojis: list[str]) -> Union[str, None]:
+def user_select_emoji(emojis: list[str]) -> str | None:
     while True:
         try:
             for i, emo in enumerate(emojis, start=1):

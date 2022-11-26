@@ -25,7 +25,9 @@ def test_clean_non_emoji_characters(word, expected):
     ("slee tree fire water cat", ['😴', '🎄', '🔥', '🤽', '🈸']),
 ])
 def test_get_matching_emojis(words, matches):
-    assert get_matching_emojis(words.split()) == matches
+    assert get_matching_emojis(
+        words.split(), preferences={}
+    ) == matches
 
 
 @pytest.mark.parametrize("word, num_results, emoji", [
