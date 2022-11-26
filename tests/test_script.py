@@ -1,10 +1,11 @@
 from inspect import cleandoc
+import os
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
-from emojisearcher.preferences import PREFERENCES_FILE, load_preferences
+from emojisearcher.preferences import load_preferences
 from emojisearcher.script import (clean_non_emoji_characters,
                                   get_matching_emojis,
                                   get_emojis_for_word,
@@ -26,9 +27,14 @@ faster:🏃
 
 @pytest.fixture(scope="session")
 def add_preferences():
-    prefs_file = Path(PREFERENCES_FILE)
+    prefs_file = os.environ.get("EMOJI_PREFERENCES")
+    assert prefs_file is not None
+
+    prefs_file = Path(prefs_file)
     prefs_file.write_text(PREFERENCE_FILE_CONTENT)
+
     yield
+
     prefs_file.unlink()
 
 
@@ -113,3 +119,9 @@ def test_user_selects_tree_emoji(mock_input, capfd):
     5 🎋
     """)
     assert actual == expected
+
+
+def test_load_empty_file():
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setenv('EMOJI_PREFERENCES', 'non-existent-prefs-file')
+        assert load_preferences() == {}

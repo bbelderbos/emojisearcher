@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 import re
 
-PREFERENCES_FILE = os.environ.get("EMOJI_PREFERENCES", ".preferences")
 MATCH_PREF_RE = re.compile(r"(\S+):(\S).*$")  # discard everything after emoji
+DEFAULT_PREFERENCES_FILE = ".preferences"
 
 
 def _is_comment(line: str) -> bool:
@@ -12,7 +12,8 @@ def _is_comment(line: str) -> bool:
 
 def _load_preferences_file() -> str | None:
     try:
-        return Path(PREFERENCES_FILE).read_text()
+        prefs_file = os.environ.get("EMOJI_PREFERENCES", DEFAULT_PREFERENCES_FILE)
+        return Path(prefs_file).read_text()
     except FileNotFoundError:
         return None
 
