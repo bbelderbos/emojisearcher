@@ -141,15 +141,16 @@ Say you added a preferences file like this:
 
 ```
 $ cat .preferences
-ninja:🥷 # missing (and much needed)
+ninja:🥷  # missing (and much needed)
 # overrides
-eyes:😍 # replaces default 😁
-heart:❤️  # replaces default 💓
-hearts:💕 # replaces default 💞
+eyes:😍  # replaces default 😁
+heart:❤️   # replaces default 💓
+hearts:💕  # replaces default 💞
 # easier to remember
-idea:💡 # also matches "bulb"
-# trying to fix non-working emojis
-question:❓
+idea:💡  # also matches "bulb"
+# trying to fix non-matching emojis
+bliksem:⚡️  # this is Dutch
+faster:🏃
 ```
 
 Now with the preferences in place your shiny new emojis kick in 🎉

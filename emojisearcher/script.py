@@ -44,17 +44,18 @@ def get_matching_emojis(
         preferences = load_preferences()
 
     matches = []
+    is_preference_emoji = False
     for word in words:
-        emojis = get_emojis_for_word(word.rstrip(SIGNAL_CHAR))
-        if len(emojis) == 0:
-            continue
+        if word in preferences:
+            emojis = [preferences[word]]
+            is_preference_emoji = True
+        else:
+            emojis = get_emojis_for_word(word.rstrip(SIGNAL_CHAR))
+            if len(emojis) == 0:
+                continue
 
         interactive_mode = word.endswith(SIGNAL_CHAR) or interactive
-        selected_emoji: str | None
-
-        if word in preferences:
-            selected_emoji = preferences[word]
-        elif len(emojis) > 1 and interactive_mode:
+        if len(emojis) > 1 and interactive_mode:
             selected_emoji = user_select_emoji(emojis)
             if selected_emoji is None:
                 continue
@@ -62,7 +63,9 @@ def get_matching_emojis(
             selected_emoji = emojis[0]
 
         matches.append(
-            clean_non_emoji_characters(selected_emoji))
+            selected_emoji if is_preference_emoji else
+            clean_non_emoji_characters(selected_emoji)
+        )
 
     return matches
 
