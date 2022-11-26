@@ -1,8 +1,9 @@
+import os
 from pathlib import Path
 import re
 from typing import Union
 
-PREFERENCES_FILE = ".preferences"
+PREFERENCES_FILE = os.environ.get("EMOJI_PREFERENCES", ".preferences")
 MATCH_PREF_RE = re.compile(r"(\S+):(\S).*$")  # discard everything after emoji
 
 
@@ -36,5 +37,4 @@ def load_preferences() -> dict[str, str]:
             # emojis for Ninja, NINJA and ninja
             preferences[description] = emoji
 
-    print(preferences)
     return preferences

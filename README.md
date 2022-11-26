@@ -126,6 +126,19 @@ Copied  to clipboard
 
 Since 0.6.0 you can create a `.preferences` file to create a mapping of missing / preferred emojis which will take precedence (you can use comments, they will be ignored):
 
+You can create this file in the root folder of this project, but maybe you want to store it somewhere else on your system. In that case you just need to let emojisearcher know by setting the `EMOJI_PREFERENCES` evironment variable, for example:
+
+Let's look at this in action. Normally the tool would work like this:
+
+```
+$ emo heart
+Copied 💓 to clipboard
+$ emo cool
+Copied 🆒 to clipboard
+```
+
+Say you added a preferences file like this:
+
 ```
 $ cat .preferences
 ninja:🥷 # missing (and much needed)
@@ -139,16 +152,7 @@ idea:💡 # also matches "bulb"
 question:❓
 ```
 
-Without this file:
-
-```
-$ emo heart
-Copied 💓 to clipboard
-$ emo cool
-Copied 🆒 to clipboard
-```
-
-Now with the preferences in place:
+Now with the preferences in place your shiny new emojis kick in 🎉
 
 ```
 $ emo heart
