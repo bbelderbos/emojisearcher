@@ -1,10 +1,14 @@
-## Emoji Searcher
+## Pybites Emoji Searcher
 
-Automate the boring stuff: I have been googling emojis and manually copying them to my clipboard (it's especially painful when posting to Facebook).
+I have been googling emojis and manually copying them to my clipboard.
 
-So it was time to write a script to look up emojis by text from the command line and copy them to the clipboard.
+Except for Slack + GitHub, there the `:` + autocomplete works great. For other tools, for example Facebook or plain blog / email writing, I needed a better way.
 
-By default it takes the first match in case there are multiple matching emojis. However if you append a dot (.) to a word you get to choose which emoji gets copied.
+So here is a tool to look up emojis by text from the command line and automatically copy matching ones to the clipboard (using the awesome [pyperclip](https://pyperclip.readthedocs.io/en/latest/) tool).
+
+By default it takes the first match in case there are multiple matching emojis. However if you append a dot (.) to a word you get to choose which emoji gets copied. You can also use a `.preferences` file to store overriding emojis or ones this tool does not provide.
+
+I hope you enjoy this tool and don't hesitate to reach out to me by email: bob@pybit.es or just open an issues / open a PR if you see any opportunity for improvements.
 
 ### How to install and run it
 
@@ -112,7 +116,6 @@ $ emo heart.
 1 💓
 2 🖤
 ...
-many more
 ...
 35 😻
 36 😍
@@ -120,16 +123,20 @@ Select the number of the emoji you want: 36
 Copied 😍 to clipboard
 ```
 
-And some don't work for some reason:
+And some don't work (not sure why yet ...):
 
 ```
 $ emo question
 Copied  to clipboard
 ```
 
-Since 0.6.0 you can create a `.preferences` file to create a mapping of missing / preferred emojis which will take precedence (you can use comments, they will be ignored):
+Since 0.6.0 you can create a `.preferences` file to create a mapping of missing / preferred emojis which will take precedence.
 
-You can create this file in the root folder of this project, but maybe you want to store it somewhere else on your system. In that case you just need to let emojisearcher know by setting the `EMOJI_PREFERENCES` evironment variable, for example:
+You can create this file in the root folder of the project or use the `EMOJI_PREFERENCES` environment variable to store it somewhere else:
+
+```
+$ export EMOJI_PREFERENCES=/Users/bbelderbos/.emoji_preferences
+```
 
 Let's look at this in action. Normally the tool would work like this:
 
@@ -156,16 +163,23 @@ bliksem:⚡️  # this is Dutch
 faster:🏃
 ```
 
-Now with the preferences in place your shiny new emojis kick in 🎉
+Note that you can use (inline) comments.
+
+Now with the preferences in place your shiny new emojis kick in first 🎉
 
 ```
 $ emo heart
 Copied ❤️ to clipboard
+
+(no more 💓)
+
 $ emo cool
 Copied 😎 to clipboard
+
+(no more 🆒)
 ```
 
-💡 I was considering making this file updatable via the app, but it adds extra complexity and command line arguments. I like to keep it simple for now and it's easy enough to update the preferences file in your editor.
+Enjoy!
 
 ### Running the tests and other tools
 
@@ -179,11 +193,16 @@ Copied 😎 to clipboard
 (venv) $ make typing
 ```
 
-
 ### Rich
 
-Update: I am using `rich` now to retrieve a list of emojis, it seems a bit more accurate (e.g. our beloved 🎉 emoji). I will be enhancing the cli interface with this awesome library ...
+Originally Around 0.0.5 we started `rich` now to retrieve a list of emojis, it seems a bit more accurate (e.g. our beloved tada 🎉 emoji was missing!)
 
-### Other ways
+### OS alternatives
 
-While sharing this on social media I learned about some useful OS shortcuts to retrieve emojis, [thanks Matt!](https://twitter.com/bbelderbos/status/1374414940988043264)
+While sharing this [On Twitter](https://twitter.com/bbelderbos/status/1374414940988043264) I learned about other ways to get emojis (thanks Matt Harrison):
+
+- Windows: Windows logo key  + . (period)
+
+- Mac: CTRL + CMD + Space
+
+Trying this on Mac, this does require the mouse though and it does not copy the emoji to your clipboard.
