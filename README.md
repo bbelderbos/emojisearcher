@@ -8,7 +8,7 @@ So here is a tool to look up emojis by text from the command line and automatica
 
 By default it takes the first match in case there are multiple matching emojis. However if you append a dot (.) to a word you get to choose which emoji gets copied. You can also use a `.preferences` file to store overriding emojis or ones this tool does not provide.
 
-I hope you enjoy this tool and don't hesitate to reach out to me by email: bob@pybit.es or just open an issues / open a PR if you see any opportunity for improvements.
+I hope you enjoy this tool and don't hesitate to reach out to me by email: bob@pybit.es or just open an issue / open a PR if you see any opportunity for improvements.
 
 ### How to install and run it
 
@@ -76,7 +76,7 @@ matches, otherwise the first match will be picked. Type 'q' to exit.
 Bye
 ```
 
-### Easy of use: make a shell alias
+### Ease of use: make a shell alias
 
 Using a shell alias can be really convenient for this (assuming you have the project cloned in `~/code`):
 
@@ -195,7 +195,7 @@ Enjoy!
 
 ### Rich
 
-Originally Around 0.0.5 we started `rich` now to retrieve a list of emojis, it seems a bit more accurate (e.g. our beloved tada 🎉 emoji was missing!)
+Originally Around 0.0.5 we started using `rich` to retrieve a list of emojis, it seems a bit more accurate (e.g. our beloved tada 🎉 emoji was missing!)
 
 ### OS alternatives
 

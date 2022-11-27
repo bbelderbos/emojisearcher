@@ -110,7 +110,7 @@ def _match_emojis(text):
         print(f"No matches for {text}")
 
 
-def main(args):
+def main(args):  # pragma: no cover
     if not args:
         while True:
             user_input = input(PROMPT)
@@ -125,5 +125,5 @@ def main(args):
         _match_emojis(text)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main(sys.argv[1:])

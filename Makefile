@@ -12,4 +12,4 @@ typing:
 
 .PHONY: cov
 cov:
-	pytest --cov=emojisearcher --cov-report=term-missing
+	pytest --cov=emojisearcher --cov-report=term-missing --cov-fail-under=80
