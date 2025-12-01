@@ -17,6 +17,11 @@ dependencies = [
 [tool.flit.module]
 name = "emojisearcher"
 
+[dependency-groups]
+dev = [
+    "ty>=0.0.1a29",
+]
+
 [project.optional-dependencies]
 test = [
     "pytest",
