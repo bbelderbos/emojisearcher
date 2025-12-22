@@ -6,27 +6,26 @@ from pyperclip import copy
 
 from .preferences import load_preferences
 
-QUIT = 'q'
-SIGNAL_CHAR = '.'
+QUIT = "q"
+SIGNAL_CHAR = "."
 PROMPT = f"""
 ------------------------------------------------------------------------------------
 Type one or more emoji related words ...
 End a word with a {SIGNAL_CHAR} if you want to select an emoji if there are multiple
 matches, otherwise the first match will be picked. Type 'q' to exit.
 > """
-NON_EMOJI_CHARS = re.compile('[^\U00010000-\U0010ffff]',
-                             flags=re.UNICODE)
+NON_EMOJI_CHARS = re.compile("[^\U00010000-\U0010ffff]", flags=re.UNICODE)
 
 
 def clean_non_emoji_characters(emoji: str) -> str:
-    return NON_EMOJI_CHARS.sub(r'', emoji)
+    return NON_EMOJI_CHARS.sub(r"", emoji)
 
 
 def get_matching_emojis(
     words: list[str],
     *,
     preferences: dict[str, str] | None = None,
-    interactive: bool = False
+    interactive: bool = False,
 ) -> list[str]:
     """
     Traverse words list finding matching emojis.
@@ -63,8 +62,9 @@ def get_matching_emojis(
             selected_emoji = emojis[0]
 
         matches.append(
-            selected_emoji if is_preference_emoji else
-            clean_non_emoji_characters(selected_emoji)
+            selected_emoji
+            if is_preference_emoji
+            else clean_non_emoji_characters(selected_emoji)
         )
 
     return matches
@@ -96,12 +96,12 @@ def user_select_emoji(emojis: list[str]) -> str | None:
 
 
 def copy_emojis_to_clipboard(matches: list[str]) -> None:
-    all_matching_emojis = ' '.join(matches)
+    all_matching_emojis = " ".join(matches)
     print(f"Copied {all_matching_emojis} to clipboard")
     copy(all_matching_emojis)
 
 
-def _match_emojis(text):
+def _match_emojis(text: str) -> None:
     words = text.split()
     matches = get_matching_emojis(words)
     if matches:
@@ -110,13 +110,13 @@ def _match_emojis(text):
         print(f"No matches for {text}")
 
 
-def main(args):  # pragma: no cover
+def main(args) -> None:  # pragma: no cover
     if not args:
         while True:
             user_input = input(PROMPT)
             user_input = user_input.lower()
             if user_input == QUIT:
-                print('Bye')
+                print("Bye")
                 break
 
             _match_emojis(user_input)
