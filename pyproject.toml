@@ -1,31 +1,31 @@
-[build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
-
 [project]
 name = "emojisearcher"
-authors = [{name = "Bob Belderbos", email = "bob@pybit.es"}]
+version = "0.7.0"
+authors = [{name = "Bob Belderbos", email = "bob@belderbos.dev"}]
+description = "Search and copy emojis to the OS clipboard from the command line."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 classifiers = ["License :: OSI Approved :: MIT License"]
-dynamic = ["version", "description"]
 dependencies = [
     "pyperclip >=1.8.2",
     "rich >=12.3.0",
 ]
 
-[tool.flit.module]
-name = "emojisearcher"
-
 [dependency-groups]
 dev = [
+    "prek>=0.4.5",
+    "pyrefly>=1.1.1",
+    "pytest>=9.0.1",
+    "ruff>=0.15.19",
     "ty>=0.0.1a29",
 ]
 
-[project.optional-dependencies]
-test = [
-    "pytest",
-]
+[project.scripts]
+emo = "emojisearcher.script:run"
+
+[build-system]
+requires = ["uv_build>=0.11.19,<0.12.0"]
+build-backend = "uv_build"
 
 [project.urls]
 Source = "https://github.com/bbelderbos/emojisearcher"

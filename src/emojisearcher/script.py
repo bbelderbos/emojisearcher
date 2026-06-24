@@ -1,5 +1,5 @@
-import re
 import sys
+import unicodedata
 
 from rich._emoji_codes import EMOJI as EMOJI_MAPPING
 from pyperclip import copy
@@ -8,17 +8,18 @@ from .preferences import load_preferences
 
 QUIT = "q"
 SIGNAL_CHAR = "."
+ZWJ = "\u200d"  # zero-width joiner, splits combined emoji sequences
 PROMPT = f"""
 ------------------------------------------------------------------------------------
 Type one or more emoji related words ...
 End a word with a {SIGNAL_CHAR} if you want to select an emoji if there are multiple
 matches, otherwise the first match will be picked. Type 'q' to exit.
 > """
-NON_EMOJI_CHARS = re.compile("[^\U00010000-\U0010ffff]", flags=re.UNICODE)
 
 
 def clean_non_emoji_characters(emoji: str) -> str:
-    return NON_EMOJI_CHARS.sub(r"", emoji)
+    base = emoji.split(ZWJ)[0]
+    return "".join(c for c in base if unicodedata.category(c) == "So")
 
 
 def get_matching_emojis(
@@ -125,5 +126,9 @@ def main(args) -> None:  # pragma: no cover
         _match_emojis(text)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def run() -> None:  # pragma: no cover
     main(sys.argv[1:])
+
+
+if __name__ == "__main__":  # pragma: no cover
+    run()
