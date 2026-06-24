@@ -1,4 +1,4 @@
-## Pybites Emoji Searcher
+## Emoji Searcher
 
 I have been googling emojis and manually copying them to my clipboard.
 
@@ -12,30 +12,24 @@ I hope you enjoy this tool and don't hesitate to reach out to me by email: bob@p
 
 ### How to install and run it
 
+It's published on [PyPI](https://pypi.org/project/emojisearcher/), so the easiest way to run it is with [`uvx`](https://docs.astral.sh/uv/) — no clone, no virtualenv:
+
 ```
-$ git clone git@github.com:bbelderbos/emojisearcher.git
-$ cd emojisearcher
-$ python3.10 -m venv venv
-$ source venv/bin/activate
-(venv) $ pip install -r requirements.txt
-
-# or in one command
-$ make setup
-
-# search from cli
-(venv) $ python -m emojisearcher.script bicep
+# search from the cli (copies the match to your clipboard)
+$ uvx --from emojisearcher emo bicep
 Copied 💪 to clipboard
 
-(venv) $ python -m emojisearcher.script snake
+$ uvx --from emojisearcher emo snake
 Copied 🐍 to clipboard
 
-(venv) $ python -m emojisearcher.script tada
+$ uvx --from emojisearcher emo tada
 Copied 🎉 to clipboard
+```
 
-# search interactively (specially useful if there are multiple matches, you can choose)
+Run it without arguments for interactive mode (handy when there are multiple matches and you want to pick one):
 
-(venv) $ python -m emojisearcher.script
-
+```
+$ uvx --from emojisearcher emo
 
 ------------------------------------------------------------------------------------
 Type one or more emoji related words ...
@@ -44,17 +38,6 @@ matches, otherwise the first match will be picked. Type 'q' to exit.
 > snake
 Copied 🐍 to clipboard
 
-------------------------------------------------------------------------------------
-Type one or more emoji related words ...
-End a word with a . if you want to select an emoji if there are multiple
-matches, otherwise the first match will be picked. Type 'q' to exit.
-> grin
-Copied 😺 to clipboard
-
-------------------------------------------------------------------------------------
-Type one or more emoji related words ...
-End a word with a . if you want to select an emoji if there are multiple
-matches, otherwise the first match will be picked. Type 'q' to exit.
 > grin.
 1 😺
 2 😸
@@ -68,25 +51,22 @@ matches, otherwise the first match will be picked. Type 'q' to exit.
 Select the number of the emoji you want: 4
 Copied 😃 to clipboard
 
-------------------------------------------------------------------------------------
-Type one or more emoji related words ...
-End a word with a . if you want to select an emoji if there are multiple
-matches, otherwise the first match will be picked. Type 'q' to exit.
 > q
 Bye
 ```
 
 ### Ease of use: make a shell alias
 
-Using a shell alias can be really convenient for this (assuming you have the project cloned in `~/code`):
+Typing `uvx --from emojisearcher emo` every time is a mouthful, so wrap it in a shell alias (same idea as `uvx --from pybites-search search`):
 
 ```
 # .zshrc
 function emo {
-    # subshell so you don't stay in the virtual env after running it
-    (cd $HOME/code/emojisearcher && source venv/bin/activate && python -m emojisearcher.script "$@")
+    uvx --from emojisearcher emo "$@"
 }
+```
 
+```
 $ source ~/.zshrc
 $ emo snake
 Copied 🐍 to clipboard
@@ -96,11 +76,9 @@ $ emo snake bicep tada heart fire
 Copied 🐍 💪 🎉 💓 🔥 to clipboard
 ```
 
-After sourcing your .zshrc you can now get emojis copied to your clipboard fast using `emo bicep`, `emo tada` etc.
+After sourcing your `.zshrc` you can get emojis copied to your clipboard fast using `emo bicep`, `emo tada` etc.
 
 ### Preferred emojis
-
-_This section uses the shell alias I created in the previous step._
 
 Sometimes you don't get a match:
 
@@ -123,34 +101,18 @@ Select the number of the emoji you want: 36
 Copied 😍 to clipboard
 ```
 
-And some don't work (not sure why yet ...):
+For these cases you can create a `.preferences` file to map words to specific emojis — missing ones, or overrides that take precedence over the default match.
+
+Since you run the tool with `uvx` from any directory, point the `EMOJI_PREFERENCES` environment variable at an absolute path:
 
 ```
-$ emo question
-Copied  to clipboard
+$ export EMOJI_PREFERENCES=$HOME/.emoji_preferences
 ```
 
-Since 0.6.0 you can create a `.preferences` file to create a mapping of missing / preferred emojis which will take precedence.
-
-You can create this file in the root folder of the project or use the `EMOJI_PREFERENCES` environment variable to store it somewhere else:
+A preferences file looks like this:
 
 ```
-$ export EMOJI_PREFERENCES=/Users/bbelderbos/.emoji_preferences
-```
-
-Let's look at this in action. Normally the tool would work like this:
-
-```
-$ emo heart
-Copied 💓 to clipboard
-$ emo cool
-Copied 🆒 to clipboard
-```
-
-Say you added a preferences file like this:
-
-```
-$ cat .preferences
+$ cat $EMOJI_PREFERENCES
 ninja:🥷  # missing (and much needed)
 # overrides
 eyes:😍  # replaces default 😁
@@ -158,7 +120,7 @@ heart:❤️   # replaces default 💓
 hearts:💕  # replaces default 💞
 # easier to remember
 idea:💡  # also matches "bulb"
-# trying to fix non-matching emojis
+# words in another language
 bliksem:⚡️  # this is Dutch
 faster:🏃
 ```
@@ -172,36 +134,32 @@ $ emo heart
 Copied ❤️ to clipboard
 
 (no more 💓)
-
-$ emo cool
-Copied 😎 to clipboard
-
-(no more 🆒)
 ```
 
 Enjoy!
 
 ### Running the tests and other tools
 
-```
-(venv) $ pytest
-# or
-(venv) $ make cov
+To hack on the code, clone the repo and use [uv](https://docs.astral.sh/uv/):
 
-# run flake8 and mypy
-(venv) $ make lint
-(venv) $ make typing
+```
+$ git clone git@github.com:bbelderbos/emojisearcher.git
+$ cd emojisearcher
+$ uv run pytest
+$ uv run ruff format .
+$ uv run ruff check .
+$ uv run ty check .
 ```
 
 ### Rich
 
-Originally Around 0.0.5 we started using `rich` to retrieve a list of emojis, it seems a bit more accurate (e.g. our beloved tada 🎉 emoji was missing!)
+Around 0.0.5 we started using `rich` to retrieve the list of emojis, it seems a bit more accurate (e.g. our beloved tada 🎉 emoji was missing before!).
 
 ### OS alternatives
 
-While sharing this [On Twitter](https://twitter.com/bbelderbos/status/1374414940988043264) I learned about other ways to get emojis (thanks Matt Harrison):
+While sharing this [on Twitter](https://twitter.com/bbelderbos/status/1374414940988043264) I learned about other ways to get emojis (thanks Matt Harrison):
 
-- Windows: Windows logo key  + . (period)
+- Windows: Windows logo key + . (period)
 
 - Mac: CTRL + CMD + Space
 

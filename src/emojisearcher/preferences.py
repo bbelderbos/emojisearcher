@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import re
 
-MATCH_PREF_RE = re.compile(r"(\S+):(\S).*$")  # discard everything after emoji
+MATCH_PREF_RE = re.compile(r"(\S+):(\S+).*$")  # discard everything after emoji
 DEFAULT_PREFERENCES_FILE = ".preferences"
 
 
