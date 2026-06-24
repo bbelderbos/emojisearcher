@@ -103,10 +103,8 @@ def test_user_prefs_with_larger_emoji(add_preferences):
     preferences = load_preferences()
     matches = get_matching_emojis(["bliksem"], preferences=preferences)
     encoded_actual_emoji = matches[0].encode("unicode-escape")
-    assert len(encoded_actual_emoji) == 6
     encoded_expected_emoji = "⚡️".encode("unicode-escape")
-    assert len(encoded_expected_emoji) == 12
-    assert encoded_actual_emoji in encoded_actual_emoji
+    assert encoded_actual_emoji == encoded_expected_emoji
 
 
 @pytest.mark.parametrize(
