@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="img/logo.png" alt="Emoji Searcher" width="320">
+</p>
+
 ## Emoji Searcher
 
 I have been googling emojis and manually copying them to my clipboard.
